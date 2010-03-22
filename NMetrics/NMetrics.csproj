@@ -39,6 +39,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\System.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -55,6 +59,15 @@
     <Compile Include="Run.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visitors\SilverlightProfilerVisitor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SilverlightProfiler\SilverlightProfiler.csproj">
+      <Project>{1C895538-1BBF-453B-99BD-35D5A8BF74C9}</Project>
+      <Name>SilverlightProfiler</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Profiler\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
