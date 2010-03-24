@@ -11,7 +11,7 @@ namespace NMetrics
 //            var imd = new Project(@"E:\projects\BCG\IMD\src\IMDClient\IMDClient\Bin\Debug",belongsToImdCondition, "temp\\imd\\");
             var imd = new Project(@"E:\projects\BCG\IMD\src\IMDClient\IMDClient\Bin\Debug", belongsToImdCondition, "beforeModification\\imd\\");
             imd.Initialize();
-            imd.Accept(new SilverlightProfilerVisitor(@"afterModification\\imd\\"));
+            imd.Accept(new SilverlightProfilerVisitor(@"afterModification\\imd\\", "IMDClient", "ApplicationStartup", "IMDClient.App"));
         }
     }
 }

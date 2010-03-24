@@ -5,17 +5,24 @@ using System.Windows;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using System.Linq;
-using SilverlightProfiler;
+using SilverlightProfilerRuntime;
+
 
 namespace NMetrics.Visitors
 {
     public class SilverlightProfilerVisitor : CodeVisitor
     {
         private readonly string profiledDllPath;
+        private string mainSilverlightAssembly;
+        private string methodToAddProfilingHook;
+        private string silverlightStartupType;
 
-        public SilverlightProfilerVisitor(string profiledDllPath)
+        public SilverlightProfilerVisitor(string profiledDllPath, string mainSilverlightAssembly, string methodToAddProfilingHook1, string silverlightStartupType1)
         {
             this.profiledDllPath = profiledDllPath;
+            this.mainSilverlightAssembly = mainSilverlightAssembly;
+            this.methodToAddProfilingHook = methodToAddProfilingHook1;
+            this.silverlightStartupType = silverlightStartupType1;
             if (!Directory.Exists(profiledDllPath)) Directory.CreateDirectory(profiledDllPath);
         }
 
@@ -32,14 +39,14 @@ namespace NMetrics.Visitors
 
         public override void StartVisitingAssemblyDefinition(AssemblyDefinition assembly)
         {
-            if(assembly.Name.Name.Contains("IMDClient"))
+            if(assembly.Name.Name.Contains(mainSilverlightAssembly))
             {
                 MethodReference initProfilerMethod = assembly.MainModule.Import(typeof(Profiler).GetMethod("Init"));
                 MethodReference getRootVisualMethod = assembly.MainModule.Import(typeof(Application).GetMethod("get_RootVisual"));
-                TypeDefinition app = assembly.MainModule.Types["IMDClient.App"];
+                TypeDefinition app = assembly.MainModule.Types[silverlightStartupType];
 
                 IEnumerable<MethodDefinition> appMethods = app.Methods.Cast<MethodDefinition>();
-                MethodDefinition applicationMethodToInstrument = appMethods.First(definition => definition.Name.Contains("ApplicationStartup"));
+                MethodDefinition applicationMethodToInstrument = appMethods.First(definition => definition.Name.Contains(methodToAddProfilingHook));
 
                 CilWorker worker = applicationMethodToInstrument.Body.CilWorker;
 

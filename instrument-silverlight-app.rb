@@ -8,6 +8,7 @@ Dir.mkdir('temp')
 system("unzip #{path}\\imdclient.xap -d temp")
 system('copy /Y NMetrics\bin\Debug\SilverlightProfiler.dll temp')
 system('copy /Y NMetrics\bin\Debug\afterModification\imd\IMDClient.dll temp')
+
 Dir.chdir 'temp'
 
 system("del #{path}\\imdclient.xap")

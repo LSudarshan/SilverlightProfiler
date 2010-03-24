@@ -61,9 +61,9 @@
     <Compile Include="Visitors\SilverlightProfilerVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SilverlightProfiler\SilverlightProfiler.csproj">
+    <ProjectReference Include="..\SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj">
       <Project>{1C895538-1BBF-453B-99BD-35D5A8BF74C9}</Project>
-      <Name>SilverlightProfiler</Name>
+      <Name>SilverlightProfilerRuntime</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Windows;
 using System.Windows.Input;
 using Telerik.Windows.Controls;
 
-namespace SilverlightProfiler
+namespace SilverlightProfilerRuntime
 {
     public class Profiler
     {
@@ -10,7 +10,7 @@ namespace SilverlightProfiler
 
         public void EnteringMethod()
         {
-            if(!shouldProfile) return;
+            if (!shouldProfile) return;
         }
 
         public void ExitingMethod()
@@ -18,17 +18,18 @@ namespace SilverlightProfiler
             if (!shouldProfile) return;
         }
 
-        public static void Init(System.Windows.UIElement rootVisual)
+        public static void Init(UIElement rootVisual)
         {
             rootVisual.KeyDown += (sender, args) => OnKeyDown(args);
         }
 
         private static void OnKeyDown(KeyEventArgs keyEventArgs)
         {
-            if(keyEventArgs.Key == Key.F1)
+            if (keyEventArgs.Key == Key.F1)
             {
                 StartProfiling();
-            } else if (keyEventArgs.Key == Key.F2)
+            }
+            else if (keyEventArgs.Key == Key.F2)
             {
                 StopProfiling();
             }
