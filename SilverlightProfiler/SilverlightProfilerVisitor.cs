@@ -51,17 +51,23 @@ namespace SilverlightProfilerRuntime
             exitInstructions.ForEach(
                 delegate(Instruction exitInstruction)
                     {
-                        Instruction exitMethodProfilerInstruction = worker.Create(OpCodes.Call, exitingMethod);
                         if(exitInstruction.OpCode == OpCodes.Ret)
                         {
-                            exitInstruction.OpCode = OpCodes.Call;
-                            exitInstruction.Operand = exitingMethod;
-                            worker.InsertAfter(exitInstruction, worker.Create(OpCodes.Ret));    
-                        } else
+                            ReplaceReturnInstructionToAMethodCallToAccomodateBranchesToReturn(exitInstruction, exitingMethod);
+                            worker.InsertAfter(exitInstruction, worker.Create(OpCodes.Ret));
+                        }
+                        else
                         {
+                            Instruction exitMethodProfilerInstruction = worker.Create(OpCodes.Call, exitingMethod);
                             worker.InsertBefore(exitInstruction, exitMethodProfilerInstruction);
                         }
                     });
+        }
+
+        private void ReplaceReturnInstructionToAMethodCallToAccomodateBranchesToReturn(Instruction exitInstruction, MethodReference exitingMethod)
+        {
+            exitInstruction.OpCode = OpCodes.Call;
+            exitInstruction.Operand = exitingMethod;
         }
 
         private bool IsExitInstruction(Instruction instruction)
