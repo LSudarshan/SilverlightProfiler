@@ -5,15 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AFC54EEA-D14D-4087-A685-D218B72E6C07}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{17683799-94FF-4B75-86B1-8B825DFCD6AE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NMetrics</RootNamespace>
-    <AssemblyName>NMetrics</AssemblyName>
+    <RootNamespace>SilverlightProfiler</RootNamespace>
+    <AssemblyName>SilverlightProfiler</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,6 +39,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\Silverlight\v3.0\System.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -51,13 +53,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Visitors\CodeVisitor.cs" />
-    <Compile Include="Filters\Condition.cs" />
-    <Compile Include="Project.cs" />
+    <Compile Include="Instrument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SilverlightProfilerVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Profiler\" />
+    <ProjectReference Include="..\NMetrics\NMetrics.csproj">
+      <Project>{AFC54EEA-D14D-4087-A685-D218B72E6C07}</Project>
+      <Name>NMetrics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj">
+      <Project>{1C895538-1BBF-453B-99BD-35D5A8BF74C9}</Project>
+      <Name>SilverlightProfilerRuntime</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

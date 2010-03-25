@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMetrics", "NMetrics\NMetri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerRuntime", "SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj", "{1C895538-1BBF-453B-99BD-35D5A8BF74C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfiler", "SilverlightProfiler\SilverlightProfiler.csproj", "{17683799-94FF-4B75-86B1-8B825DFCD6AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{1C895538-1BBF-453B-99BD-35D5A8BF74C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C895538-1BBF-453B-99BD-35D5A8BF74C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C895538-1BBF-453B-99BD-35D5A8BF74C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

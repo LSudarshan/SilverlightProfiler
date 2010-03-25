@@ -82,6 +82,10 @@ namespace NMetrics
             {
                 visitor.VisitMethodDefinition(method);
             }
+            foreach (MethodDefinition constructor in type.Constructors)
+            {
+                visitor.VisitMethodDefinition(constructor);
+            }
             visitor.FinishVisitingTypeDefinition(type);
         }
     }

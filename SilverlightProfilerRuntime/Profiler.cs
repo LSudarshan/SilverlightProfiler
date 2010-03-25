@@ -8,12 +8,12 @@ namespace SilverlightProfilerRuntime
     {
         private static bool shouldProfile;
 
-        public void EnteringMethod()
+        public static void EnteringMethod()
         {
             if (!shouldProfile) return;
         }
 
-        public void ExitingMethod()
+        public static void ExitingMethod()
         {
             if (!shouldProfile) return;
         }
@@ -38,7 +38,7 @@ namespace SilverlightProfilerRuntime
         private static void StopProfiling()
         {
             shouldProfile = false;
-            RadWindow.Confirm("Blah", Closed);
+            RadWindow.Confirm("F2", Closed);
         }
 
         private static void Closed(object sender, WindowClosedEventArgs args)
@@ -48,6 +48,7 @@ namespace SilverlightProfilerRuntime
         private static void StartProfiling()
         {
             shouldProfile = true;
+            RadWindow.Confirm("F1", Closed);
         }
     }
 }
