@@ -48,31 +48,25 @@ namespace SilverlightProfilerRuntime
             MethodReference exitingMethod =
                 method.DeclaringType.Module.Import(typeof (Profiler).GetMethod("ExitingMethod"));
             List<Instruction> exitInstructions = ExitInstructions(method);
-
-            Instruction exitMethodInstruction = worker.Create(OpCodes.Call, exitingMethod);
-            if(exitInstructions.Exists(instruction => instruction.OpCode == OpCodes.Ret))
-            {
-                Instruction newReturn = worker.Create(OpCodes.Ret);
-                worker.Append(newReturn);
-                worker.InsertBefore(newReturn, exitMethodInstruction);        
-            }
-            
             exitInstructions.ForEach(
                 delegate(Instruction exitInstruction)
                     {
+                        Instruction exitMethodProfilerInstruction = worker.Create(OpCodes.Call, exitingMethod);
                         if(exitInstruction.OpCode == OpCodes.Ret)
                         {
-                            worker.Replace(exitInstruction, worker.Create(OpCodes.Br_S, exitMethodInstruction));
+                            exitInstruction.OpCode = OpCodes.Call;
+                            exitInstruction.Operand = exitingMethod;
+                            worker.InsertAfter(exitInstruction, worker.Create(OpCodes.Ret));    
                         } else
                         {
-                            worker.InsertBefore(exitInstruction, exitMethodInstruction);    
+                            worker.InsertBefore(exitInstruction, exitMethodProfilerInstruction);
                         }
                     });
         }
 
         private bool IsExitInstruction(Instruction instruction)
         {
-            return instruction.OpCode == OpCodes.Ret || instruction.OpCode == OpCodes.Throw || instruction.OpCode == OpCodes.Rethrow;
+            return instruction.OpCode == OpCodes.Ret || instruction.OpCode == OpCodes.Throw;
         }
 
         private void EnteringMethodInstruction(MethodDefinition method, CilWorker worker)
