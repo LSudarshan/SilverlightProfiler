@@ -33,7 +33,8 @@ namespace SilverlightProfilerRuntime
 
             if (instructions.FindAll(instruction => instruction.OpCode == OpCodes.Ret).Count > 1)
             {
-                throw new ApplicationException("Multiple return points in " + method);
+//                throw new ApplicationException("Multiple return points in " + method);
+                return;
             }
 
             CilWorker worker = method.Body.CilWorker;

@@ -18,7 +18,7 @@ namespace SilverlightProfiler
             string silverlightStartupType = args[1];
             string methodToAddProfilingHook = args[2];
 
-            Condition belongsToImdCondition = Condition.Eq("IMD").Or(Condition.Eq("IContact")).Or(Condition.Eq("BCG"));
+            Condition belongsToImdCondition = Condition.Eq("IMD").Or(Condition.Eq("IContact")).Or(Condition.Eq("BCG")).Or(Condition.Eq("Telerik"));
             var imd = new Project(@"E:\projects\NMetrics\Temp", belongsToImdCondition,
                                   "beforeModification\\");
             imd.Initialize();

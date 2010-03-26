@@ -56,8 +56,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Call.cs" />
+    <Compile Include="ProfileOutput.xaml.cs">
+      <DependentUpon>ProfileOutput.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Profiler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ProfileOutput.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="SilverlightProfilerRuntime.ProfileOutput"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation" 
+    xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" >
+    <UserControl.Resources>
+
+        <telerik:HierarchicalDataTemplate x:Key="Item">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding FullName}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </telerik:HierarchicalDataTemplate>
+
+        <telerik:HierarchicalDataTemplate x:Key="RootItem" ItemsSource="{Binding Children}">
+        </telerik:HierarchicalDataTemplate>
+
+    </UserControl.Resources>
+
+    <Border Background="#ecf0f3" CornerRadius="6" Margin="10" >
+        <Grid x:Name="LayoutRoot" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Controls:RadTreeListView IsLineEnabled="True" IsEditable="True"
+              x:Name="RadTreeListView1" Grid.Row="1"
+              Background="White" Margin="10"
+              BorderBrush="#a9a9a9" BorderThickness="1"
+              ItemTemplate="{StaticResource RootItem}"
+              ItemsSource="{Binding Children}">
+                <Controls:RadTreeListView.Columns>
+                    <Controls:RadColumn CellTemplate="{StaticResource Item}" PropertyName="FullName" Header="Call hierarchy"/>
+
+                    <Controls:RadColumn Header="Duration">
+                        <Controls:RadColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Duration}" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </Controls:RadColumn.CellTemplate>
+
+                    </Controls:RadColumn>
+                    <Controls:RadColumn Header="Number of times called">
+                        <Controls:RadColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding NumberOfTimesCalledFromParent}"/>
+                            </DataTemplate>
+                        </Controls:RadColumn.CellTemplate>
+                    </Controls:RadColumn>
+
+                </Controls:RadTreeListView.Columns>
+            </Controls:RadTreeListView>
+        </Grid>
+    </Border>
+
+</UserControl>
