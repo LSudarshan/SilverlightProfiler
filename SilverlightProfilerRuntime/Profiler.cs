@@ -15,11 +15,13 @@ namespace SilverlightProfilerRuntime
 
         public static void EnteringMethod()
         {
+            DateTime startTime = DateTime.Now;
             if (!shouldProfile) return;
             StackFrame frame = new StackTrace().GetFrame(2);
             MethodBase method = frame.GetMethod();
             Call parent = Parent();
             string classWhichOwnsMethod = method.DeclaringType == null ? "" : method.DeclaringType.Name;
+            Debug.WriteLine("Entering " + classWhichOwnsMethod + "." + method.Name);
             var call = new Call(method.Name, classWhichOwnsMethod, parent);
             if (parent.HasChild(call))
             {
@@ -32,7 +34,7 @@ namespace SilverlightProfilerRuntime
 
             call.IncrementCount();
             stack.Push(call);
-            call.Enter(DateTime.Now);
+            call.Enter(startTime);
         }
 
         private static Call Parent()

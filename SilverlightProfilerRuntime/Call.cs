@@ -14,6 +14,7 @@ namespace SilverlightProfilerRuntime
         private string classWhichOwnsMethod;
         private DateTime enterTime;
         private double duration;
+        private double profilerMethodsExecutionDuration;
 
         public Call(string methodName, string classWhichOwnsMethod, Call parent)
         {
@@ -34,7 +35,17 @@ namespace SilverlightProfilerRuntime
 
         public double Duration
         {
-            get { return duration; }
+            get { return duration - ProfilerMethodsExecutionDuration; }
+        }
+
+        protected double ProfilerMethodsExecutionDuration
+        {
+            get
+            {
+                double total = 0;
+                children.ForEach(call => total += call.ProfilerMethodsExecutionDuration);
+                return profilerMethodsExecutionDuration + total;
+            }
         }
 
         public int NumberOfTimesCalledFromParent
@@ -50,6 +61,7 @@ namespace SilverlightProfilerRuntime
         public void Enter(DateTime time)
         {
             enterTime = time;
+            profilerMethodsExecutionDuration += DateTime.Now.Subtract(enterTime).TotalMilliseconds;
         }
 
         public bool HasChild(Call call)
@@ -64,7 +76,8 @@ namespace SilverlightProfilerRuntime
 
         public void Exit(DateTime time)
         {
-            duration += time.Subtract(enterTime).TotalMilliseconds;                      
+            profilerMethodsExecutionDuration += DateTime.Now.Subtract(time).TotalMilliseconds;
+            duration += time.Subtract(enterTime).TotalMilliseconds;
         }
 
         public void Dump(StringBuilder stringBuilder)
