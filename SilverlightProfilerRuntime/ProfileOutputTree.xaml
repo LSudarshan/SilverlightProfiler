@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="SilverlightProfilerRuntime.ProfileOutputTree"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+    xmlns:toolkit="clr-namespace:System.Windows;assembly=System.Windows.Controls">
+
+  <UserControl.Resources>
+    <toolkit:HierarchicalDataTemplate x:Key="TreeElementTemplate" ItemsSource="{Binding Children}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding FullName}"></TextBlock>
+        <TextBlock Text="  "/>
+        <TextBlock Text="{Binding NumberOfTimesCalledFromParent}"></TextBlock>
+        <TextBlock Text="  "/>
+        <TextBlock Text="{Binding Duration}"></TextBlock>
+      </StackPanel>
+    </toolkit:HierarchicalDataTemplate>
+  </UserControl.Resources>
+  
+  <Grid x:Name="LayoutRoot" Background="White">
+    <Controls:TreeView ItemsSource="{Binding Children}" ItemTemplate="{StaticResource TreeElementTemplate}" />
+  </Grid>
+</UserControl>

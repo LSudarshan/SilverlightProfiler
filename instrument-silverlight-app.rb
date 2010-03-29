@@ -1,12 +1,18 @@
 require 'rexml/document'
+require 'FileUtils'
 include REXML
 
 path = 'e:\projects\bcg\imd\src\imdclient\imdclient.web\clientbin'
-#system("rename #{path}\\imdclient.xap imdclient.zip")
 
-require 'FileUtils'
-FileUtils.rm_rf 'temp'
-Dir.mkdir('temp')
+
+def recreate_dir(name)
+  FileUtils.rm_rf name
+  Dir.mkdir(name)
+end
+
+recreate_dir 'temp'
+recreate_dir 'beforeModification'
+recreate_dir 'afterModification'
 
 system("unzip #{path}\\imdclient.xap -d temp")
 
@@ -15,6 +21,7 @@ fail "#{$?}" unless system('silverlightprofiler\bin\debug\silverlightprofiler IM
 
 system('copy /Y SilverlightProfiler\bin\Debug\SilverlightProfilerRuntime.dll temp')
 #system('copy /Y afterModification\IMDClient.dll temp')
+#system('copy /Y afterModification\IMD.Lancher.Common.dll temp')
 #system('copy /Y afterModification\IMD.ContactManagementModule.dll temp')
 system('copy /Y afterModification\*.* temp')
 

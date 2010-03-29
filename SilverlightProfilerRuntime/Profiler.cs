@@ -4,19 +4,18 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using Telerik.Windows.Controls;
 
 namespace SilverlightProfilerRuntime
 {
     public class Profiler
     {
-        [ThreadStatic] private static readonly Stack<Call> stack = new Stack<Call>(new[] {new Call("Root", "", null),});
+        private static readonly Stack<Call> stack = new Stack<Call>(new[] {new Call("Root", "", null),});
         private static bool shouldProfile;
 
         public static void EnteringMethod()
         {
-            DateTime startTime = DateTime.Now;
             if (!shouldProfile) return;
+            DateTime startTime = DateTime.Now;
             StackFrame frame = new StackTrace().GetFrame(2);
             MethodBase method = frame.GetMethod();
             Call parent = Parent();
@@ -69,18 +68,9 @@ namespace SilverlightProfilerRuntime
         private static void StopProfiling()
         {
             shouldProfile = false;
-//            var builder = new StringBuilder();
-//            stack.Peek().Dump(builder);
-//            RadWindow.Confirm(builder.ToString(), Closed);
-            var window = new RadWindow();
-            var profileOutput = new ProfileOutput();
-            profileOutput.DataContext = stack.Peek();
-            window.Content = profileOutput;
-            window.ShowDialog();
-        }
-
-        private static void Closed(object sender, WindowClosedEventArgs args)
-        {
+            var window = new ProfilerOutputWindow();
+            window.DataContext = stack.Peek();
+            window.Show();
         }
 
         private static void StartProfiling()
@@ -88,7 +78,7 @@ namespace SilverlightProfilerRuntime
             stack.Clear();
             stack.Push(new Call("Root", "", null));
             shouldProfile = true;
-            RadWindow.Confirm("Starting profiling", Closed);
+            MessageBox.Show("Starting profiling");
         }
     }
 }

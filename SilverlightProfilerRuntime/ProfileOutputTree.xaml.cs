@@ -2,9 +2,9 @@
 
 namespace SilverlightProfilerRuntime
 {
-    public partial class ProfileOutput : UserControl
+    public partial class ProfileOutputTree : UserControl
     {
-        public ProfileOutput()
+        public ProfileOutputTree()
         {
             InitializeComponent();
         }
