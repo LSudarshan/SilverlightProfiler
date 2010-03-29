@@ -20,9 +20,6 @@ system("unzip #{path}\\imdclient.xap -d temp")
 fail "#{$?}" unless system('silverlightprofiler\bin\debug\silverlightprofiler IMDClient IMDClient.App ApplicationStartup')
 
 system('copy /Y SilverlightProfiler\bin\Debug\SilverlightProfilerRuntime.dll temp')
-#system('copy /Y afterModification\IMDClient.dll temp')
-#system('copy /Y afterModification\IMD.Lancher.Common.dll temp')
-#system('copy /Y afterModification\IMD.ContactManagementModule.dll temp')
 system('copy /Y afterModification\*.* temp')
 
 doc = Document.new File.new('temp\appmanifest.xaml')
