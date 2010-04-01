@@ -33,7 +33,6 @@ namespace SilverlightProfilerRuntime
 
             if (instructions.FindAll(instruction => instruction.OpCode == OpCodes.Ret).Count > 1)
             {
-//                throw new ApplicationException("Multiple return points in " + method);
                 return;
             }
 
@@ -111,6 +110,18 @@ namespace SilverlightProfilerRuntime
                                                  worker.InsertBefore(callProfilerInstruction, getRootVisualInstruction);
                                                  worker.InsertBefore(getRootVisualInstruction, loadArgumentToStack);
                                              });
+            }
+            RemoveStrongNames(assembly);
+        }
+
+        private void RemoveStrongNames(AssemblyDefinition assembly)
+        {
+            if (assembly.Name.HasPublicKey)
+            {
+                assembly.Name.PublicKey = new byte[0];
+                assembly.Name.PublicKeyToken = new byte[0];
+                assembly.Name.Flags = AssemblyFlags.SideBySideCompatible;
+                assembly.Name.HasPublicKey = false;
             }
         }
 

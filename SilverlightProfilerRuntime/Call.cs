@@ -87,7 +87,7 @@ namespace SilverlightProfilerRuntime
             {
                 stringBuilder.Append(" ");
             }
-            stringBuilder.Append(FullName);
+            stringBuilder.Append(FullName + "  " + NumberOfTimesCalledFromParent + "  " + Duration);
             children.ForEach(call => call.Dump(stringBuilder));
         }
 

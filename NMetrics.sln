@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerRuntime"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfiler", "SilverlightProfiler\SilverlightProfiler.csproj", "{17683799-94FF-4B75-86B1-8B825DFCD6AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveStrongNames", "RemoveStrongNames\RemoveStrongNames.csproj", "{06EBC836-AA33-4763-A9EA-36A53B4A6F16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17683799-94FF-4B75-86B1-8B825DFCD6AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06EBC836-AA33-4763-A9EA-36A53B4A6F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06EBC836-AA33-4763-A9EA-36A53B4A6F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06EBC836-AA33-4763-A9EA-36A53B4A6F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06EBC836-AA33-4763-A9EA-36A53B4A6F16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

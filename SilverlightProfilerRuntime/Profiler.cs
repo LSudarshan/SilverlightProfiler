@@ -15,25 +15,33 @@ namespace SilverlightProfilerRuntime
         public static void EnteringMethod()
         {
             if (!shouldProfile) return;
-            DateTime startTime = DateTime.Now;
-            StackFrame frame = new StackTrace().GetFrame(2);
-            MethodBase method = frame.GetMethod();
-            Call parent = Parent();
-            string classWhichOwnsMethod = method.DeclaringType == null ? "" : method.DeclaringType.Name;
-            Debug.WriteLine("Entering " + classWhichOwnsMethod + "." + method.Name);
-            var call = new Call(method.Name, classWhichOwnsMethod, parent);
-            if (parent.HasChild(call))
+            try
             {
-                call = parent.GetChild(call);
-            }
-            else
-            {
-                parent.Children.Add(call);
-            }
+                DateTime startTime = DateTime.Now;
+                StackFrame frame = new StackTrace().GetFrame(1);
+                MethodBase method = frame.GetMethod();
+                Call parent = Parent();
+                string classWhichOwnsMethod = method.DeclaringType == null ? "" : method.DeclaringType.Name;
 
-            call.IncrementCount();
-            stack.Push(call);
-            call.Enter(startTime);
+                var call = new Call(method.Name, classWhichOwnsMethod, parent);
+                if (parent.HasChild(call))
+                {
+                    call = parent.GetChild(call);
+                }
+                else
+                {
+                    parent.Children.Add(call);
+                }
+
+                call.IncrementCount();
+                stack.Push(call);
+                call.Enter(startTime);
+            } catch(Exception e)
+            {
+                Debug.WriteLine(e);
+                MessageBox.Show(e.Message);
+                throw e;
+            }
         }
 
         private static Call Parent()
@@ -68,9 +76,17 @@ namespace SilverlightProfilerRuntime
         private static void StopProfiling()
         {
             shouldProfile = false;
-            var window = new ProfilerOutputWindow();
-            window.DataContext = stack.Peek();
-            window.Show();
+            if(stack.Count > 0)
+            {
+                Call root = stack.Peek();
+                var window = new ProfilerOutputWindow(root);
+                window.DataContext = root;
+                window.Show();
+            } else
+            {
+                MessageBox.Show("Profiler stack is empty... should have atleast root");
+            }
+
         }
 
         private static void StartProfiling()
