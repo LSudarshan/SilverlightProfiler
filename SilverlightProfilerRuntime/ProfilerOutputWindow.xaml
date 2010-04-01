@@ -3,7 +3,7 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
            xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
            xmlns:SilverlightProfilerRuntime="clr-namespace:SilverlightProfilerRuntime"
-           Title="Profile Output">
+           Title="Profile Output" Height="600" Width="600">
   <Grid x:Name="LayoutRoot" Margin="2">
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>

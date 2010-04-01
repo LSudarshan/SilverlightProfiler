@@ -14,6 +14,7 @@ namespace SilverlightProfilerRuntime
         {
             this.call = call;
             InitializeComponent();
+            DataContext = call;
         }
 
         private void OKButton_Click(object sender, RoutedEventArgs e)

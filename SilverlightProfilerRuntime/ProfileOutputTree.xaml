@@ -5,7 +5,7 @@
     xmlns:toolkit="clr-namespace:System.Windows;assembly=System.Windows.Controls">
 
   <UserControl.Resources>
-    <toolkit:HierarchicalDataTemplate x:Key="TreeElementTemplate" ItemsSource="{Binding Children}">
+    <toolkit:HierarchicalDataTemplate x:Key="TreeElementTemplate" ItemsSource="{Binding SortedChildren}">
       <StackPanel Orientation="Horizontal">
         <TextBlock Text="{Binding FullName}"></TextBlock>
         <TextBlock Text="  "/>
@@ -17,6 +17,6 @@
   </UserControl.Resources>
   
   <Grid x:Name="LayoutRoot" Background="White">
-    <Controls:TreeView ItemsSource="{Binding Children}" ItemTemplate="{StaticResource TreeElementTemplate}" />
+    <Controls:TreeView ItemsSource="{Binding SortedChildren}" ItemTemplate="{StaticResource TreeElementTemplate}" />
   </Grid>
 </UserControl>

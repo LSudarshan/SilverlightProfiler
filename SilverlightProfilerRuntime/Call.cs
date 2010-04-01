@@ -33,6 +33,21 @@ namespace SilverlightProfilerRuntime
             get { return children; }
         }
 
+        public List<Call> SortedChildren
+        {
+            get
+            {
+                List<Call> calls = new List<Call>(Children);
+                calls.Sort(Comparison);
+                return calls;
+            }
+        }
+
+        private int Comparison(Call x, Call y)
+        {
+            return y.Duration.CompareTo(x.Duration);
+        }
+
         public double Duration
         {
             get { return duration - ProfilerMethodsExecutionDuration; }
@@ -55,7 +70,15 @@ namespace SilverlightProfilerRuntime
 
         public string FullName
         {
-            get { return classWhichOwnsMethod + "." + methodName; }
+            get
+            {
+                return classWhichOwnsMethod + "." + methodName;
+            }
+        }
+
+        public bool IsThreadRoot
+        {
+            get { return classWhichOwnsMethod == THREAD; }
         }
 
         public void Enter(DateTime time)
@@ -96,5 +119,7 @@ namespace SilverlightProfilerRuntime
             if (parent == null) return 0;
             return parent.Depth() + 1;
         }
+
+        public static string THREAD = "AppThread";
     }
 }
