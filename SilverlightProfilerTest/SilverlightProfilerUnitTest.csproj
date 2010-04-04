@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssembliesPatternParserTest.cs" />
     <Compile Include="Should.cs" />
     <Compile Include="SilverlightProfilerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

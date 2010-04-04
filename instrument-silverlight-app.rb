@@ -11,16 +11,14 @@ def recreate_dir(name)
 end
 
 recreate_dir 'temp'
-recreate_dir 'beforeModification'
-recreate_dir 'afterModification'
 
 system("unzip #{path}\\imdclient.xap -d temp")
 
 
-fail "#{$?}" unless system('silverlightprofiler\bin\debug\silverlightprofiler IMDClient IMDClient.App ApplicationStartup')
+fail "#{$?}" unless system("silverlightprofiler\\bin\\debug\\silverlightprofiler IMDClient IMDClient.App ApplicationStartup E:\\projects\\NMetrics\\Temp\\
+\"IMD || IContact || BCG || Telerik\"")
 
 system('copy /Y SilverlightProfiler\bin\Debug\SilverlightProfilerRuntime.dll temp')
-system('copy /Y afterModification\*.* temp')
 
 doc = Document.new File.new('temp\appmanifest.xaml')
 XPath.first(doc, '//Deployment.Parts').add_element('AssemblyPart', {'x:Name'=>'SilverlightProfilerRuntime', 'Source'=>'SilverlightProfilerRuntime.dll'})

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using NMetrics;
 using NMetrics.Filters;
 using SilverlightProfilerRuntime;
+using SilverlightProfilerUnitTest;
 
 namespace SilverlightProfiler
 {
@@ -9,21 +11,22 @@ namespace SilverlightProfiler
     {
         private static void Main(string[] args)
         {
-            if(args.Length != 3)
+            if(args.Length != 5)
             {
                 Console.WriteLine("Usage is : Instrument mainSilverlightAssembly silverlightStartupType methodToAddProfilingHook");
                 return;
             }
+            
             string mainSilverlightAssembly = args[0];
             string silverlightStartupType = args[1];
             string methodToAddProfilingHook = args[2];
+            string originalPathOfDlls = args[3];
+            string assemblyPatternsToInstrument = args[4];
 
-            Condition belongsToImdCondition = Condition.Eq("IMD").Or(Condition.Eq("IContact")).Or(Condition.Eq("BCG")).Or(Condition.Eq("Telerik"));
-            var imd = new Project(@"E:\projects\NMetrics\Temp", belongsToImdCondition,
-                                  "beforeModification\\");
+            Condition belongsToImdCondition = new AssembliesPatternParser().Parse(assemblyPatternsToInstrument);
+            var imd = new Project(originalPathOfDlls, belongsToImdCondition, originalPathOfDlls);
             imd.Initialize();
-            imd.Accept(new SilverlightProfilerVisitor(@"afterModification\\", mainSilverlightAssembly,
-                                                      silverlightStartupType, methodToAddProfilingHook));
+            imd.Accept(new SilverlightProfilerVisitor(originalPathOfDlls, mainSilverlightAssembly, silverlightStartupType, methodToAddProfilingHook));
         }
     }
 }
