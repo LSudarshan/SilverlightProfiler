@@ -13,7 +13,7 @@ namespace SilverlightProfiler
         {
             if(args.Length != 5)
             {
-                Console.WriteLine("Usage is : Instrument mainSilverlightAssembly silverlightStartupType methodToAddProfilingHook");
+                Console.WriteLine("Usage is : Instrument mainSilverlightAssembly silverlightStartupType methodToAddProfilingHook originalPathOfDlls assemblyPatternsToInstrument");
                 return;
             }
             
