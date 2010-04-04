@@ -10,24 +10,24 @@ namespace NMetrics
     public class Project
     {
         private readonly Condition fileSelectionPattern;
-        private readonly string updatedDllsLocation;
-        private readonly string path;
+        private readonly string cleanCopyOfDllsLocation;
+        private readonly string originalPathOfDlls;
 
-        public Project(string path, Condition fileSelectionPattern, string updatedDllsLocation)
+        public Project(string originalPathOfDlls, Condition fileSelectionPattern, string cleanCopyOfDllsLocation)
         {
-            this.path = path;
+            this.originalPathOfDlls = originalPathOfDlls;
             this.fileSelectionPattern = fileSelectionPattern;
-            this.updatedDllsLocation = updatedDllsLocation;
+            this.cleanCopyOfDllsLocation = cleanCopyOfDllsLocation;
         }
 
         public void Initialize()
         {
-            if(path != updatedDllsLocation)
+            if(originalPathOfDlls != cleanCopyOfDllsLocation)
             {
-                if (Directory.Exists(updatedDllsLocation)) Directory.Delete(updatedDllsLocation, true);
-                Directory.CreateDirectory(updatedDllsLocation);
-                FileInfo[] allDlls = new DirectoryInfo(path).GetFiles("*.dll", SearchOption.AllDirectories);
-                allDlls.ToList().ForEach(CopyToTempLocation);
+                if (Directory.Exists(cleanCopyOfDllsLocation)) Directory.Delete(cleanCopyOfDllsLocation, true);
+                Directory.CreateDirectory(cleanCopyOfDllsLocation);
+                FileInfo[] allDlls = new DirectoryInfo(originalPathOfDlls).GetFiles("*.dll", SearchOption.AllDirectories);
+                allDlls.ToList().ForEach(CopyToCleanCopyLocation);
             }
             
         }
@@ -42,38 +42,39 @@ namespace NMetrics
             return sourcePath.Substring(sourcePath.LastIndexOf("\\") + 1);
         }
 
-        private void CopyToTempLocation(FileInfo fileInfo)
+        private void CopyToCleanCopyLocation(FileInfo fileInfo)
         {
             string fileName = FileName(fileInfo.FullName);
-            string destination = updatedDllsLocation + "\\" + fileName;
+            string destination = cleanCopyOfDllsLocation + "\\" + fileName;
             File.Copy(fileInfo.FullName, destination, true);
         }
 
         public void Accept(CodeVisitor visitor)
         {
-            FileInfo[] allDlls = new DirectoryInfo(path).GetFiles("*.dll", SearchOption.AllDirectories);
+            FileInfo[] allDlls = new DirectoryInfo(cleanCopyOfDllsLocation).GetFiles("*.dll", SearchOption.AllDirectories);
             List<FileInfo> files = allDlls.ToList().FindAll(MatchesPattern).ToList();
             var assemblies =
-                new List<AssemblyDefinition>(files.Select(file => AssemblyFactory.GetAssembly(updatedDllsLocation + file.Name)));
+                new List<AssemblyDefinition>(files.Select(file => AssemblyFactory.GetAssembly(cleanCopyOfDllsLocation + file.Name)));
             foreach (AssemblyDefinition assembly in assemblies)
             {
-                visitor.StartVisitingAssemblyDefinition(assembly);
-                TypeDefinitionCollection types = assembly.MainModule.Types;
-                foreach (TypeDefinition type in types)
-                {
-                    ProcessType(type, visitor);
-                }
-                visitor.FinishVisitingAssemblyDefinition(assembly);
+                ProcessAssembly(visitor, assembly);
             }
         }
 
-        private void ProcessType(TypeDefinition type, CodeVisitor visitor)
+        public static void ProcessAssembly(CodeVisitor visitor, AssemblyDefinition assembly)
+        {
+            visitor.StartVisitingAssemblyDefinition(assembly);
+            TypeDefinitionCollection types = assembly.MainModule.Types;
+            foreach (TypeDefinition type in types)
+            {
+                ProcessType(type, visitor);
+            }
+            visitor.FinishVisitingAssemblyDefinition(assembly);
+        }
+
+        private static void ProcessType(TypeDefinition type, CodeVisitor visitor)
         {
             visitor.StartVisitingTypeDefinition(type);
-            foreach (TypeDefinition nestedType in type.NestedTypes)
-            {
-                ProcessType(nestedType, visitor);
-            }
             foreach (FieldDefinition field in type.Fields)
             {
                 visitor.VisitFieldDefinition(field);

@@ -30,7 +30,10 @@ namespace SilverlightProfilerRuntime
 
         public List<Call> Children
         {
-            get { return children; }
+            get
+            {
+                return children;
+            }
         }
 
         public List<Call> SortedChildren

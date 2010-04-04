@@ -1,18 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using System.Linq;
 
 namespace SilverlightProfilerRuntime
 {
     public class Profiler
     {
-        private static Dictionary<int, Stack<Call>> stacksPerThread = new Dictionary<int, Stack<Call>>();
+        private static readonly Dictionary<int, Stack<Call>> stacksPerThread = new Dictionary<int, Stack<Call>>();
         private static bool shouldProfile;
+
+        private static Stack<Call> Stack
+        {
+            get
+            {
+                int key = Thread.CurrentThread.GetHashCode();
+                if (stacksPerThread.ContainsKey(key))
+                    return stacksPerThread[key];
+                var newStack = new Stack<Call>();
+                newStack.Push(new Call("", Call.THREAD, null));
+                stacksPerThread[key] = newStack;
+                return newStack;
+            }
+        }
 
         public static void EnteringMethod()
         {
@@ -22,12 +36,10 @@ namespace SilverlightProfilerRuntime
                 DateTime startTime = DateTime.Now;
                 StackFrame frame = new StackTrace().GetFrame(1);
                 MethodBase method = frame.GetMethod();
-                string classWhichOwnsMethod = method.DeclaringType == null ? "" : method.DeclaringType.Name;
-//                Debug.WriteLine("Entering:" + classWhichOwnsMethod + "." + method.Name);                
                 Call parent = Parent();
-                
-
-                var call = new Call(method.Name, classWhichOwnsMethod, parent);
+                string className = ClassName(method);
+                var call = new Call(method.Name, className, parent);
+//                Debug.WriteLine("Entering " + call.FullName);
                 if (parent.HasChild(call))
                 {
                     call = parent.GetChild(call);
@@ -36,30 +48,22 @@ namespace SilverlightProfilerRuntime
                 {
                     parent.Children.Add(call);
                 }
-
                 call.IncrementCount();
                 Stack.Push(call);
                 call.Enter(startTime);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
                 throw;
             }
         }
 
-        private static Stack<Call> Stack
+        private static string ClassName(MethodBase method)
         {
-            get
-            {
-                int key = Thread.CurrentThread.GetHashCode();
-                if (stacksPerThread.ContainsKey(key))
-                    return stacksPerThread[key];
-                Stack<Call> newStack = new Stack<Call>();
-                newStack.Push(new Call("", Call.THREAD, null));
-                stacksPerThread[key] = newStack;
-                return newStack;
-            }
-        } 
+            return method.DeclaringType == null ? "" : method.DeclaringType.FullName;
+        }
+
 
         private static Call Parent()
         {
@@ -71,21 +75,33 @@ namespace SilverlightProfilerRuntime
             try
             {
                 if (!shouldProfile) return;
-                if (!Stack.Peek().IsThreadRoot)
-                {
-                    Call call = Stack.Pop();
-//                    Debug.WriteLine("Exiting:" + call.FullName);                
-                    call.Exit(DateTime.Now);
-                }
-                else
-                {
-                    //This is a buggy condition. 
-                    Debug.WriteLine("BUG!!! exiting a method when the stacks root is thread node.");
-                }
-            } catch(Exception e)
+                DateTime time = DateTime.Now;
+                ValidateStackAndFixItIfImbalanced(new StackTrace().GetFrame(1).GetMethod());
+                Call call = Stack.Pop();
+                call.Exit(time);
+            }
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
                 throw;
+            }
+        }
+
+        private static void ValidateStackAndFixItIfImbalanced(MethodBase method)
+        {
+            Call currentCall = Stack.Peek();
+            string actualFullName = new Call(method.Name, ClassName(method), null).FullName;
+            while (currentCall.FullName != actualFullName)
+            {
+                Stack.Pop();
+                if (Stack.Count == 1)
+                {
+                    string message = string.Format("expected {0} but was {1}", currentCall.FullName, actualFullName);
+                    Debug.WriteLine(message);
+                    Debug.WriteLine(new StackTrace());
+                    throw new Exception(message);
+                }
+                currentCall = Stack.Peek();
             }
         }
 
@@ -109,9 +125,9 @@ namespace SilverlightProfilerRuntime
         private static void StopProfiling()
         {
             shouldProfile = false;
-            List<Call> threadRoots = new List<Call>(stacksPerThread.Values.Cast<Stack<Call>>().Select(stack => Root(stack)));
+            var threadRoots = new List<Call>(stacksPerThread.Values.Cast<Stack<Call>>().Select(stack => Root(stack)));
             Debug.WriteLine("Number of threads - " + threadRoots.Count);
-            Call root = new Call("", "all threads", null);
+            var root = new Call("", "all threads", null);
             root.Children.AddRange(threadRoots);
             var window = new ProfilerOutputWindow(root);
             window.Show();
@@ -120,7 +136,7 @@ namespace SilverlightProfilerRuntime
         private static Call Root(Stack<Call> stack)
         {
             Debug.WriteLine("Stack has " + stack.Count + " Calls");
-            while(stack.Count > 1)
+            while (stack.Count > 1)
             {
                 stack.Pop();
             }
