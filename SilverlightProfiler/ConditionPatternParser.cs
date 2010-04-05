@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NMetrics.Filters;
+using SilverlightProfiler.Filters;
 
-namespace SilverlightProfilerUnitTest
+namespace SilverlightProfiler
 {
     public class ConditionPatternParser
     {

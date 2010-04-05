@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace NMetrics.Filters
+namespace SilverlightProfiler.Filters
 {
     public abstract class Condition
     {

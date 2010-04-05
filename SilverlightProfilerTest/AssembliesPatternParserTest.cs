@@ -1,5 +1,6 @@
-﻿using NMetrics.Filters;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using SilverlightProfiler;
+using SilverlightProfiler.Filters;
 
 namespace SilverlightProfilerUnitTest
 {

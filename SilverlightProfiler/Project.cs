@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using Mono.Cecil;
-using NMetrics.Filters;
-using NMetrics.Visitors;
+using SilverlightProfiler.Filters;
+using SilverlightProfiler.Visitors;
 
-namespace NMetrics
+namespace SilverlightProfiler
 {
     public class Project
     {

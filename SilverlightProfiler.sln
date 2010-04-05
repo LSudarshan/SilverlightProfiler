@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NMetrics", "NMetrics\NMetrics.csproj", "{AFC54EEA-D14D-4087-A685-D218B72E6C07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerRuntime", "SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj", "{1C895538-1BBF-453B-99BD-35D5A8BF74C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfiler", "SilverlightProfiler\SilverlightProfiler.csproj", "{17683799-94FF-4B75-86B1-8B825DFCD6AE}"
@@ -24,10 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AFC54EEA-D14D-4087-A685-D218B72E6C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFC54EEA-D14D-4087-A685-D218B72E6C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFC54EEA-D14D-4087-A685-D218B72E6C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFC54EEA-D14D-4087-A685-D218B72E6C07}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C895538-1BBF-453B-99BD-35D5A8BF74C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C895538-1BBF-453B-99BD-35D5A8BF74C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C895538-1BBF-453B-99BD-35D5A8BF74C9}.Release|Any CPU.ActiveCfg = Release|Any CPU

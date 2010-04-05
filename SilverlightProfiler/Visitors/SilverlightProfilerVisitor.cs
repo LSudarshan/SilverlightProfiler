@@ -6,10 +6,9 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using NMetrics.Filters;
-using NMetrics.Visitors;
+using SilverlightProfilerRuntime;
 
-namespace SilverlightProfilerRuntime
+namespace SilverlightProfiler.Visitors
 {
     public class SilverlightProfilerVisitor : CodeVisitor
     {

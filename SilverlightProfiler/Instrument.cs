@@ -3,10 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Ionic.Zip;
-using NMetrics;
-using NMetrics.Filters;
-using SilverlightProfilerRuntime;
-using SilverlightProfilerUnitTest;
+using SilverlightProfiler.Filters;
+using SilverlightProfiler.Visitors;
 
 namespace SilverlightProfiler
 {

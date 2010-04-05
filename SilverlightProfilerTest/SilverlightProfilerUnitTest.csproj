@@ -59,10 +59,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NMetrics\NMetrics.csproj">
-      <Project>{AFC54EEA-D14D-4087-A685-D218B72E6C07}</Project>
-      <Name>NMetrics</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj">
       <Project>{1C895538-1BBF-453B-99BD-35D5A8BF74C9}</Project>
       <Name>SilverlightProfilerRuntime</Name>

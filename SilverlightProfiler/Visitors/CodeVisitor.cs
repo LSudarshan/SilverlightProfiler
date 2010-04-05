@@ -1,7 +1,6 @@
 ﻿using Mono.Cecil;
-using NMetrics.Filters;
 
-namespace NMetrics.Visitors
+namespace SilverlightProfiler.Visitors
 {
     public class CodeVisitor
     {
