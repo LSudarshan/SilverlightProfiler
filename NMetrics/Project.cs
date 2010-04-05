@@ -11,13 +11,15 @@ namespace NMetrics
     {
         private readonly Condition fileSelectionPattern;
         private readonly string cleanCopyOfDllsLocation;
+        private readonly Condition typeInstrumentCondition;
         private readonly string originalPathOfDlls;
 
-        public Project(string originalPathOfDlls, Condition fileSelectionPattern, string cleanCopyOfDllsLocation)
+        public Project(string originalPathOfDlls, Condition fileSelectionPattern, string cleanCopyOfDllsLocation, Condition typeInstrumentCondition)
         {
             this.originalPathOfDlls = originalPathOfDlls;
             this.fileSelectionPattern = fileSelectionPattern;
             this.cleanCopyOfDllsLocation = cleanCopyOfDllsLocation;
+            this.typeInstrumentCondition = typeInstrumentCondition;
         }
 
         public void Initialize()
@@ -61,13 +63,14 @@ namespace NMetrics
             }
         }
 
-        public static void ProcessAssembly(CodeVisitor visitor, AssemblyDefinition assembly)
+        public void ProcessAssembly(CodeVisitor visitor, AssemblyDefinition assembly)
         {
             visitor.StartVisitingAssemblyDefinition(assembly);
             TypeDefinitionCollection types = assembly.MainModule.Types;
             foreach (TypeDefinition type in types)
             {
-                ProcessType(type, visitor);
+                if(typeInstrumentCondition.Matches(type.Name))
+                    ProcessType(type, visitor);
             }
             visitor.FinishVisitingAssemblyDefinition(assembly);
         }

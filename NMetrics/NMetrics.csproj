@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssembliesPatternParser.cs" />
+    <Compile Include="ConditionPatternParser.cs" />
     <Compile Include="Visitors\CodeVisitor.cs" />
     <Compile Include="Filters\Condition.cs" />
     <Compile Include="Project.cs" />

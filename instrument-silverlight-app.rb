@@ -16,7 +16,7 @@ system("unzip #{path}\\imdclient.xap -d temp")
 
 
 fail "#{$?}" unless system("silverlightprofiler\\bin\\debug\\silverlightprofiler IMDClient IMDClient.App ApplicationStartup E:\\projects\\NMetrics\\Temp\\
-\"IMD || IContact || BCG || Telerik\"")
+\"IMD || IContact || BCG || Telerik\" \".\"")
 
 system('copy /Y SilverlightProfiler\bin\Debug\SilverlightProfilerRuntime.dll temp')
 

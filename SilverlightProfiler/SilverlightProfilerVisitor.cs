@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using NMetrics.Filters;
 using NMetrics.Visitors;
 
 namespace SilverlightProfilerRuntime
@@ -16,8 +17,7 @@ namespace SilverlightProfilerRuntime
         private string methodToAddProfilingHook;
         private string silverlightStartupType;
 
-        public SilverlightProfilerVisitor(string profiledDllPath, string mainSilverlightAssembly,
-                                          string silverlightStartupType, string methodToAddProfilingHook)
+        public SilverlightProfilerVisitor(string profiledDllPath, string mainSilverlightAssembly, string silverlightStartupType, string methodToAddProfilingHook)
         {
             this.profiledDllPath = profiledDllPath;
             this.mainSilverlightAssembly = mainSilverlightAssembly;

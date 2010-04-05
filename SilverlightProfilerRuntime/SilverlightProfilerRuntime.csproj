@@ -60,6 +60,9 @@
     <Compile Include="ProfilerOutputWindow.xaml.cs">
       <DependentUpon>ProfilerOutputWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProfilerStartWindow.xaml.cs">
+      <DependentUpon>ProfilerStartWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +71,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ProfilerOutputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="ProfilerStartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </Page>

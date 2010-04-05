@@ -11,9 +11,9 @@ namespace SilverlightProfiler
     {
         private static void Main(string[] args)
         {
-            if(args.Length != 5)
+            if(args.Length != 6)
             {
-                Console.WriteLine("Usage is : Instrument mainSilverlightAssembly silverlightStartupType methodToAddProfilingHook originalPathOfDlls assemblyPatternsToInstrument");
+                Console.WriteLine("Usage is : Instrument mainSilverlightAssembly silverlightStartupType methodToAddProfilingHook originalPathOfDlls assemblyPatternsToInstrument ClassPatternsToInstrument");
                 return;
             }
             
@@ -22,9 +22,11 @@ namespace SilverlightProfiler
             string methodToAddProfilingHook = args[2];
             string originalPathOfDlls = args[3];
             string assemblyPatternsToInstrument = args[4];
+            string typePatternsToInstrument = args[5];
 
-            Condition belongsToImdCondition = new AssembliesPatternParser().Parse(assemblyPatternsToInstrument);
-            var imd = new Project(originalPathOfDlls, belongsToImdCondition, originalPathOfDlls);
+            Condition assemblyInstrumentCondition = new ConditionPatternParser().Parse(assemblyPatternsToInstrument);
+            Condition typeInstrumentCondition = new ConditionPatternParser().Parse(typePatternsToInstrument);
+            var imd = new Project(originalPathOfDlls, assemblyInstrumentCondition, originalPathOfDlls, typeInstrumentCondition);
             imd.Initialize();
             imd.Accept(new SilverlightProfilerVisitor(originalPathOfDlls, mainSilverlightAssembly, silverlightStartupType, methodToAddProfilingHook));
         }

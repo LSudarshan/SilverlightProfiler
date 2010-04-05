@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using NMetrics;
+using NMetrics.Filters;
 using NMetrics.Visitors;
 using NUnit.Framework;
 using SampleSilverlightApplication;
@@ -20,7 +21,7 @@ namespace SilverlightProfilerUnitTest
         public void Setup()
         {
             assembly = AssemblyFactory.GetAssembly(@"..\..\..\SampleSilverlightApplication\bin\debug\SampleSilverlightApplication.dll");
-            Project.ProcessAssembly(new SilverlightProfilerVisitor("afterModification\\", "SammpleSilverlightApplication", "SampleSilverlightApplication.App", "Application_Startup"), assembly);
+            new Project("", null, "", Condition.Eq(".")).ProcessAssembly(new SilverlightProfilerVisitor("afterModification\\", "SammpleSilverlightApplication", "SampleSilverlightApplication.App", "Application_Startup"), assembly);
         }
 
         [Test]

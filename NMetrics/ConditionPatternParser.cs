@@ -5,7 +5,7 @@ using NMetrics.Filters;
 
 namespace SilverlightProfilerUnitTest
 {
-    public class AssembliesPatternParser
+    public class ConditionPatternParser
     {
         public Condition Parse(string text)
         {
@@ -19,8 +19,17 @@ namespace SilverlightProfilerUnitTest
             if(text.Contains("||"))
             {
                 return ParseAtomicOrCcondition(text);
+            } else if(text.Contains("!"))
+            {
+                return ParseAtomicNotCcondition(text);
             }
             return Condition.Eq(text);
+        }
+
+        private Condition ParseAtomicNotCcondition(string text)
+        {
+            string textWithNot = text.Trim().Remove(0, 1);
+            return Condition.Eq(textWithNot).Not();
         }
 
         private Condition ParseAtomicOrCcondition(string text)

@@ -6,7 +6,7 @@ namespace SilverlightProfilerUnitTest
     [TestFixture]
     public class AssembliesPatternParserTest
     {
-        AssembliesPatternParser parser = new AssembliesPatternParser();
+        ConditionPatternParser parser = new ConditionPatternParser();
 
         [Test]
         public void SingleWordShouldMapRoEqualsCondition()
@@ -25,6 +25,15 @@ namespace SilverlightProfilerUnitTest
             condition.Matches("IMD.Blah.SomethingElse").ShouldBeTrue();
             condition.Matches("MContact.Blah.SomethingElse").ShouldBeTrue();
             condition.Matches("MConta.Blah.SomethingElse").ShouldBeFalse();
+        }
+
+        [Test]
+        public void NotOperator()
+        {
+            Condition condition = parser.Parse("!IMD");
+            condition.ShouldBeA(typeof(NotCondition));
+            condition.Matches("ABC").ShouldBeTrue();
+            condition.Matches("IMD").ShouldBeFalse();
         }
     }
 }

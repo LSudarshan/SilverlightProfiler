@@ -11,8 +11,10 @@ namespace SilverlightProfilerRuntime
 {
     public class Profiler
     {
-        private static readonly Dictionary<int, Stack<Call>> stacksPerThread = new Dictionary<int, Stack<Call>>();
+        public static readonly Dictionary<int, Stack<Call>> stacksPerThread = new Dictionary<int, Stack<Call>>();
         private static bool shouldProfile;
+        public static ProfilerStartWindow StartWindow;
+        public static ProfilerOutputWindow ProfilerOutputWindow;
 
         private static Stack<Call> Stack
         {
@@ -122,15 +124,15 @@ namespace SilverlightProfilerRuntime
             }
         }
 
-        private static void StopProfiling()
+        public static void StopProfiling()
         {
             shouldProfile = false;
             var threadRoots = new List<Call>(stacksPerThread.Values.Cast<Stack<Call>>().Select(stack => Root(stack)));
             Debug.WriteLine("Number of threads - " + threadRoots.Count);
             var root = new Call("", "all threads", null);
             root.Children.AddRange(threadRoots);
-            var window = new ProfilerOutputWindow(root);
-            window.Show();
+            ProfilerOutputWindow = new ProfilerOutputWindow(root);
+            ProfilerOutputWindow.Show();
         }
 
         private static Call Root(Stack<Call> stack)
@@ -143,11 +145,12 @@ namespace SilverlightProfilerRuntime
             return stack.Peek();
         }
 
-        private static void StartProfiling()
+        public static void StartProfiling()
         {
             stacksPerThread.Clear();
             shouldProfile = true;
-            MessageBox.Show("Starting profiling");
+            StartWindow = new ProfilerStartWindow();
+            StartWindow.Show();
         }
     }
 }

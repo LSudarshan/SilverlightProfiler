@@ -1,9 +1,14 @@
 ﻿using Mono.Cecil;
+using NMetrics.Filters;
 
 namespace NMetrics.Visitors
 {
     public class CodeVisitor
     {
+        public CodeVisitor()
+        {
+        }
+
         public virtual void StartVisitingAssemblyDefinition(AssemblyDefinition assembly)
         {
         }
