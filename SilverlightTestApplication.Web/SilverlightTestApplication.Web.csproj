@@ -103,11 +103,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>RD /S /Q temp
-mkdir temp
-unzip $(TargetDir)..\clientbin\SilverlightTestApplication.xap -d temp
-$(ProjectDir)..\SilverlightProfiler\bin\debug\SilverlightProfiler.exe SilverlightTestApplication  SilverlightTestApplication.App Application_Startup temp\ SilverlightTestApplication !Test
-copy temp\*.* .
-zip $(TargetDir)..\clientbin\InstrumentedSilverlightTestApplication.xap  *.*</PostBuildEvent>
+    <PostBuildEvent>$(ProjectDir)..\SilverlightProfiler\bin\debug\SilverlightProfiler.exe SilverlightTestApplication $(ProjectDir)clientbin\SilverlightTestApplication.xap  SilverlightTestApplication !Test</PostBuildEvent>
   </PropertyGroup>
 </Project>

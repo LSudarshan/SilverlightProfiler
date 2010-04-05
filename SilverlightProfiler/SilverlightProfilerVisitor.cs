@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -14,15 +15,11 @@ namespace SilverlightProfilerRuntime
     {
         private readonly string profiledDllPath;
         private string mainSilverlightAssembly;
-        private string methodToAddProfilingHook;
-        private string silverlightStartupType;
 
-        public SilverlightProfilerVisitor(string profiledDllPath, string mainSilverlightAssembly, string silverlightStartupType, string methodToAddProfilingHook)
+        public SilverlightProfilerVisitor(string profiledDllPath, string mainSilverlightAssembly)
         {
             this.profiledDllPath = profiledDllPath;
             this.mainSilverlightAssembly = mainSilverlightAssembly;
-            this.methodToAddProfilingHook = methodToAddProfilingHook;
-            this.silverlightStartupType = silverlightStartupType;
             if (!Directory.Exists(profiledDllPath)) Directory.CreateDirectory(profiledDllPath);
         }
 
@@ -89,11 +86,11 @@ namespace SilverlightProfilerRuntime
                 MethodReference initProfilerMethod = assembly.MainModule.Import(typeof (Profiler).GetMethod("Init"));
                 MethodReference getRootVisualMethod =
                     assembly.MainModule.Import(typeof (Application).GetMethod("get_RootVisual"));
-                TypeDefinition app = assembly.MainModule.Types[silverlightStartupType];
+                TypeDefinition app = assembly.MainModule.Types.Cast<TypeDefinition>().First(definition => definition.BaseType!=null && definition.BaseType.Name.Equals("Application"));
 
                 IEnumerable<MethodDefinition> appMethods = app.Methods.Cast<MethodDefinition>();
-                MethodDefinition applicationMethodToInstrument =
-                    appMethods.First(definition => definition.Name.Contains(methodToAddProfilingHook));
+                MethodDefinition applicationMethodToInstrument = GetStartupApplicationMethod(appMethods, app.Constructors);/*
+                    appMethods.First(definition => definition.Name.Contains(methodToAddProfilingHook));*/
 
                 CilWorker worker = applicationMethodToInstrument.Body.CilWorker;
 
@@ -112,6 +109,27 @@ namespace SilverlightProfilerRuntime
                                              });
             }
             RemoveStrongNames(assembly);
+        }
+
+        private MethodDefinition GetStartupApplicationMethod(IEnumerable<MethodDefinition> methods, ConstructorCollection constructors)
+        {
+            MethodDefinition constructorWithStartupDefinition = constructors.Cast<MethodDefinition>().First(constructor => HasStartupEvent(constructor));
+            List<Instruction> instructions = constructorWithStartupDefinition.Body.Instructions.Cast<Instruction>().ToList();
+            string operandForLoadingApplicationStartupFunction = instructions[instructions.IndexOf(GetStartupEventHandlerInstruction(instructions))-1].Operand.ToString();
+//            Console.WriteLine(operandForLoadingApplicationStartupFunction);
+            string applicationStartupMethod = Regex.Match(operandForLoadingApplicationStartupFunction, "::(.*)\\(").Groups[1].Captures[0].Value;
+            Console.WriteLine("application startup method is : " + applicationStartupMethod);
+            return methods.First(definition => definition.Name == applicationStartupMethod);
+        }
+
+        private Instruction GetStartupEventHandlerInstruction(List<Instruction> instructions)
+        {
+            return instructions.FirstOrDefault(instruction => instruction.OpCode==OpCodes.Newobj && instruction.Operand.ToString().Contains("StartupEventHandler"));
+        }
+
+        private bool HasStartupEvent(MethodDefinition constructor)
+        {
+            return GetStartupEventHandlerInstruction(constructor.Body.Instructions.Cast<Instruction>().ToList()) != null;
         }
 
         private void RemoveStrongNames(AssemblyDefinition assembly)
@@ -135,7 +153,7 @@ namespace SilverlightProfilerRuntime
         public override void FinishVisitingAssemblyDefinition(AssemblyDefinition assembly)
         {
             string name = assembly.Name.Name + ".dll";
-            AssemblyFactory.SaveAssembly(assembly, profiledDllPath + name);
+            AssemblyFactory.SaveAssembly(assembly, Path.Combine(profiledDllPath, name));
         }
     }
 }

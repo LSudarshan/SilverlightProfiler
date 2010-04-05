@@ -21,7 +21,7 @@ namespace SilverlightProfilerUnitTest
         public void Setup()
         {
             assembly = AssemblyFactory.GetAssembly(@"..\..\..\SampleSilverlightApplication\bin\debug\SampleSilverlightApplication.dll");
-            new Project("", null, "", Condition.Eq(".")).ProcessAssembly(new SilverlightProfilerVisitor("afterModification\\", "SammpleSilverlightApplication", "SampleSilverlightApplication.App", "Application_Startup"), assembly);
+            new Project("", null, "", Condition.Eq(".")).ProcessAssembly(new SilverlightProfilerVisitor("afterModification\\", "SammpleSilverlightApplication"), assembly);
         }
 
         [Test]

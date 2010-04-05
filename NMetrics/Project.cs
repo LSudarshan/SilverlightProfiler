@@ -56,7 +56,7 @@ namespace NMetrics
             FileInfo[] allDlls = new DirectoryInfo(cleanCopyOfDllsLocation).GetFiles("*.dll", SearchOption.AllDirectories);
             List<FileInfo> files = allDlls.ToList().FindAll(MatchesPattern).ToList();
             var assemblies =
-                new List<AssemblyDefinition>(files.Select(file => AssemblyFactory.GetAssembly(cleanCopyOfDllsLocation + file.Name)));
+                new List<AssemblyDefinition>(files.Select(file => AssemblyFactory.GetAssembly(Path.Combine(cleanCopyOfDllsLocation, file.Name))));
             foreach (AssemblyDefinition assembly in assemblies)
             {
                 ProcessAssembly(visitor, assembly);
