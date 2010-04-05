@@ -1,4 +1,4 @@
-﻿namespace SampleSilverlightApplication
+﻿namespace SilverlightTestApplication
 {
     public class OuterClass
     {

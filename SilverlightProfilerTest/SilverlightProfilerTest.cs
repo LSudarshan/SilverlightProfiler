@@ -6,9 +6,10 @@ using NMetrics;
 using NMetrics.Filters;
 using NMetrics.Visitors;
 using NUnit.Framework;
-using SampleSilverlightApplication;
 using SilverlightProfilerRuntime;
 using System.Linq;
+using SilverlightProfilerUnitTest;
+using SilverlightTestApplication;
 
 namespace SilverlightProfilerUnitTest
 {

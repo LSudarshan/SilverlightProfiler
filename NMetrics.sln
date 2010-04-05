@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveStrongNames", "Remove
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerUnitTest", "SilverlightProfilerTest\SilverlightProfilerUnitTest.csproj", "{6BBCAAC0-6FC6-45E0-BC86-EADB0D1C2C2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSilverlightApplication", "SampleSilverlightApplication\SampleSilverlightApplication.csproj", "{FD610CEB-B37D-460C-8222-C7AD495EE843}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightTestApplication", "SilverlightTestApplication\SilverlightTestApplication.csproj", "{254F0255-9149-4E1C-83CB-94B25221E908}"
 	ProjectSection(ProjectDependencies) = postProject
 		{17683799-94FF-4B75-86B1-8B825DFCD6AE} = {17683799-94FF-4B75-86B1-8B825DFCD6AE}
@@ -46,10 +44,6 @@ Global
 		{6BBCAAC0-6FC6-45E0-BC86-EADB0D1C2C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BBCAAC0-6FC6-45E0-BC86-EADB0D1C2C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BBCAAC0-6FC6-45E0-BC86-EADB0D1C2C2D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD610CEB-B37D-460C-8222-C7AD495EE843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD610CEB-B37D-460C-8222-C7AD495EE843}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD610CEB-B37D-460C-8222-C7AD495EE843}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD610CEB-B37D-460C-8222-C7AD495EE843}.Release|Any CPU.Build.0 = Release|Any CPU
 		{254F0255-9149-4E1C-83CB-94B25221E908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{254F0255-9149-4E1C-83CB-94B25221E908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{254F0255-9149-4E1C-83CB-94B25221E908}.Release|Any CPU.ActiveCfg = Release|Any CPU

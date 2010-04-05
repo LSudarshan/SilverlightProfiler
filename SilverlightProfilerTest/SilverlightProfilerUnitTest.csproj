@@ -63,10 +63,6 @@
       <Project>{AFC54EEA-D14D-4087-A685-D218B72E6C07}</Project>
       <Name>NMetrics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SampleSilverlightApplication\SampleSilverlightApplication.csproj">
-      <Project>{FD610CEB-B37D-460C-8222-C7AD495EE843}</Project>
-      <Name>SampleSilverlightApplication</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj">
       <Project>{1C895538-1BBF-453B-99BD-35D5A8BF74C9}</Project>
       <Name>SilverlightProfilerRuntime</Name>
@@ -74,6 +70,10 @@
     <ProjectReference Include="..\SilverlightProfiler\SilverlightProfiler.csproj">
       <Project>{17683799-94FF-4B75-86B1-8B825DFCD6AE}</Project>
       <Name>SilverlightProfiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SilverlightTestApplication\SilverlightTestApplication.csproj">
+      <Project>{254F0255-9149-4E1C-83CB-94B25221E908}</Project>
+      <Name>SilverlightTestApplication</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
