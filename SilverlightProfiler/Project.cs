@@ -9,7 +9,7 @@ namespace SilverlightProfiler
 {
     public class Project
     {
-        private readonly Condition fileSelectionPattern;
+        private readonly Condition assemblyInstrumentationCondition;
         private readonly string cleanCopyOfDllsLocation;
         private readonly Condition typeInstrumentCondition;
         private readonly string originalPathOfDlls;
@@ -17,7 +17,7 @@ namespace SilverlightProfiler
         public Project(string originalPathOfDlls, Condition fileSelectionPattern, string cleanCopyOfDllsLocation, Condition typeInstrumentCondition)
         {
             this.originalPathOfDlls = originalPathOfDlls;
-            this.fileSelectionPattern = fileSelectionPattern;
+            this.assemblyInstrumentationCondition = fileSelectionPattern;
             this.cleanCopyOfDllsLocation = cleanCopyOfDllsLocation;
             this.typeInstrumentCondition = typeInstrumentCondition;
         }
@@ -36,7 +36,7 @@ namespace SilverlightProfiler
 
         private bool MatchesPattern(FileInfo fileInfo)
         {
-            return fileSelectionPattern.Matches(FileName(fileInfo.FullName));
+            return assemblyInstrumentationCondition.Matches(FileName(fileInfo.FullName));
         }
 
         private string FileName(string sourcePath)
@@ -66,6 +66,7 @@ namespace SilverlightProfiler
         public void ProcessAssembly(CodeVisitor visitor, AssemblyDefinition assembly)
         {
             visitor.StartVisitingAssemblyDefinition(assembly);
+            new StrongName(assembly, assemblyInstrumentationCondition).FixReferences();
             TypeDefinitionCollection types = assembly.MainModule.Types;
             foreach (TypeDefinition type in types)
             {
