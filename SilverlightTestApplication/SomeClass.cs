@@ -14,6 +14,13 @@ namespace SilverlightTestApplication
             D("text");
         }
 
+
+        public static void ThrowsException()
+        {
+            int a = 0;
+            throw new Exception("blah");
+        }
+
         private void D(string text)
         {
         }
@@ -21,6 +28,20 @@ namespace SilverlightTestApplication
         private void B()
         {
             
+        }
+
+        public static void E()
+        {
+            try
+            {
+                ThrowsException();
+            }catch(Exception e)
+            {
+                if("abc".Contains("efg"))
+                {
+                    throw;
+                }
+            }
         }
     }
 }

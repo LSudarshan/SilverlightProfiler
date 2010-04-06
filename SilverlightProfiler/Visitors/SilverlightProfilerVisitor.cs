@@ -43,32 +43,45 @@ namespace SilverlightProfiler.Visitors
         {
             MethodReference exitingMethod =
                 method.DeclaringType.Module.Import(typeof (Profiler).GetMethod("ExitingMethod"));
-            List<Instruction> exitInstructions = ExitInstructions(method);
-            exitInstructions.ForEach(
-                delegate(Instruction exitInstruction)
-                    {
-                        if(exitInstruction.OpCode == OpCodes.Ret)
-                        {
-                            ReplaceReturnInstructionToAMethodCallToAccomodateBranchesToReturn(exitInstruction, exitingMethod);
-                            worker.InsertAfter(exitInstruction, worker.Create(OpCodes.Ret));
-                        }
-                        else
-                        {
-                            Instruction exitMethodProfilerInstruction = worker.Create(OpCodes.Call, exitingMethod);
-                            worker.InsertBefore(exitInstruction, exitMethodProfilerInstruction);
-                        }
-                    });
+            MethodReference exceptionThrownMethod =
+                method.DeclaringType.Module.Import(typeof (Profiler).GetMethod("ExceptionThrown"));
+            InstructionsWithOpcode(method, OpCodes.Ret).ForEach(
+                exitInstruction =>
+                InstrumentMethodAtReturn(worker, exitInstruction, exitingMethod, method));
+            InstructionsWithOpcode(method, OpCodes.Throw).ForEach(
+                exitInstruction =>
+                InstrumentMethodAtThrow(worker, exitInstruction, exceptionThrownMethod));
+            
+            InstructionsWithOpcode(method, OpCodes.Rethrow).ForEach(
+                exitInstruction =>
+                InstrumentMethodAtThrow(worker, exitInstruction, exceptionThrownMethod));
         }
 
-        private void ReplaceReturnInstructionToAMethodCallToAccomodateBranchesToReturn(Instruction exitInstruction, MethodReference exitingMethod)
+        private void InstrumentMethodAtThrow(CilWorker worker, Instruction throwInstruction,
+                                                          MethodReference profilerMethod)
         {
-            exitInstruction.OpCode = OpCodes.Call;
-            exitInstruction.Operand = exitingMethod;
+            Instruction newThrowInstruction = worker.Create(throwInstruction.OpCode);
+            throwInstruction.OpCode = OpCodes.Call;
+            throwInstruction.Operand = profilerMethod;
+            worker.InsertAfter(throwInstruction, newThrowInstruction);
         }
 
-        private bool IsExitInstruction(Instruction instruction)
+        private void InstrumentMethodAtReturn(CilWorker worker,
+                                                                                       Instruction exitInstruction,
+                                                                                       MethodReference exitingMethod,
+                                                                                       MethodDefinition
+                                                                                           methodToInstrument)
         {
-            return instruction.OpCode == OpCodes.Ret || instruction.OpCode == OpCodes.Throw;
+            exitInstruction.OpCode = OpCodes.Ldstr;
+            exitInstruction.Operand = MethodName(methodToInstrument);
+            Instruction callToProfiler = worker.Create(OpCodes.Call, exitingMethod);
+            worker.InsertAfter(exitInstruction, callToProfiler);
+            worker.InsertAfter(callToProfiler, worker.Create(OpCodes.Ret));
+        }
+
+        private string MethodName(MethodDefinition methodToInstrument)
+        {
+            return methodToInstrument.DeclaringType.FullName + "." + methodToInstrument.Name;
         }
 
         private void EnteringMethodInstruction(MethodDefinition method, CilWorker worker)
@@ -76,6 +89,8 @@ namespace SilverlightProfiler.Visitors
             MethodReference enteringMethod =
                 method.DeclaringType.Module.Import(typeof (Profiler).GetMethod("EnteringMethod"));
             worker.InsertBefore(method.Body.Instructions[0], worker.Create(OpCodes.Call, enteringMethod));
+            worker.InsertBefore(method.Body.Instructions[0],
+                                worker.Create(OpCodes.Ldstr, MethodName(method)));
         }
 
         public override void StartVisitingAssemblyDefinition(AssemblyDefinition assembly)
@@ -85,12 +100,13 @@ namespace SilverlightProfiler.Visitors
                 MethodReference initProfilerMethod = assembly.MainModule.Import(typeof (Profiler).GetMethod("Init"));
                 MethodReference getRootVisualMethod =
                     assembly.MainModule.Import(typeof (Application).GetMethod("get_RootVisual"));
-                TypeDefinition app = assembly.MainModule.Types.Cast<TypeDefinition>().First(definition => definition.BaseType!=null && definition.BaseType.Name.Equals("Application"));
+                TypeDefinition app =
+                    assembly.MainModule.Types.Cast<TypeDefinition>().First(
+                        definition => definition.BaseType != null && definition.BaseType.Name.Equals("Application"));
 
                 IEnumerable<MethodDefinition> appMethods = app.Methods.Cast<MethodDefinition>();
-                MethodDefinition applicationMethodToInstrument = GetStartupApplicationMethod(appMethods, app.Constructors);/*
-                    appMethods.First(definition => definition.Name.Contains(methodToAddProfilingHook));*/
-
+                MethodDefinition applicationMethodToInstrument = GetStartupApplicationMethod(appMethods,
+                                                                                             app.Constructors);
                 CilWorker worker = applicationMethodToInstrument.Body.CilWorker;
 
                 Instruction loadArgumentToStack = worker.Create(OpCodes.Ldarg_0);
@@ -98,32 +114,42 @@ namespace SilverlightProfiler.Visitors
                 Instruction callProfilerInstruction = worker.Create(OpCodes.Call, initProfilerMethod);
                 Instruction nopInstruction = worker.Create(OpCodes.Nop);
 
-                List<Instruction> exitInstructions = ExitInstructions(applicationMethodToInstrument);
-                exitInstructions.ForEach(delegate(Instruction exitInstruction)
-                                             {
-                                                 worker.InsertBefore(exitInstruction, nopInstruction);
-                                                 worker.InsertBefore(nopInstruction, callProfilerInstruction);
-                                                 worker.InsertBefore(callProfilerInstruction, getRootVisualInstruction);
-                                                 worker.InsertBefore(getRootVisualInstruction, loadArgumentToStack);
-                                             });
+                InstructionsWithOpcode(applicationMethodToInstrument, OpCodes.Ret).ForEach(
+                    delegate(Instruction exitInstruction)
+                        {
+                            worker.InsertBefore(exitInstruction, nopInstruction);
+                            worker.InsertBefore(nopInstruction, callProfilerInstruction);
+                            worker.InsertBefore(callProfilerInstruction, getRootVisualInstruction);
+                            worker.InsertBefore(getRootVisualInstruction, loadArgumentToStack);
+                        });
             }
             RemoveStrongNames(assembly);
         }
 
-        private MethodDefinition GetStartupApplicationMethod(IEnumerable<MethodDefinition> methods, ConstructorCollection constructors)
+        private MethodDefinition GetStartupApplicationMethod(IEnumerable<MethodDefinition> methods,
+                                                             ConstructorCollection constructors)
         {
-            MethodDefinition constructorWithStartupDefinition = constructors.Cast<MethodDefinition>().First(constructor => HasStartupEvent(constructor));
-            List<Instruction> instructions = constructorWithStartupDefinition.Body.Instructions.Cast<Instruction>().ToList();
-            string operandForLoadingApplicationStartupFunction = instructions[instructions.IndexOf(GetStartupEventHandlerInstruction(instructions))-1].Operand.ToString();
+            MethodDefinition constructorWithStartupDefinition =
+                constructors.Cast<MethodDefinition>().First(constructor => HasStartupEvent(constructor));
+            List<Instruction> instructions =
+                constructorWithStartupDefinition.Body.Instructions.Cast<Instruction>().ToList();
+            string operandForLoadingApplicationStartupFunction =
+                instructions[instructions.IndexOf(GetStartupEventHandlerInstruction(instructions)) - 1].Operand.ToString
+                    ();
 //            Console.WriteLine(operandForLoadingApplicationStartupFunction);
-            string applicationStartupMethod = Regex.Match(operandForLoadingApplicationStartupFunction, "::(.*)\\(").Groups[1].Captures[0].Value;
+            string applicationStartupMethod =
+                Regex.Match(operandForLoadingApplicationStartupFunction, "::(.*)\\(").Groups[1].Captures[0].Value;
             Console.WriteLine("application startup method is : " + applicationStartupMethod);
             return methods.First(definition => definition.Name == applicationStartupMethod);
         }
 
         private Instruction GetStartupEventHandlerInstruction(List<Instruction> instructions)
         {
-            return instructions.FirstOrDefault(instruction => instruction.OpCode==OpCodes.Newobj && instruction.Operand.ToString().Contains("StartupEventHandler"));
+            return
+                instructions.FirstOrDefault(
+                    instruction =>
+                    instruction.OpCode == OpCodes.Newobj &&
+                    instruction.Operand.ToString().Contains("StartupEventHandler"));
         }
 
         private bool HasStartupEvent(MethodDefinition constructor)
@@ -142,11 +168,11 @@ namespace SilverlightProfiler.Visitors
             }
         }
 
-        private List<Instruction> ExitInstructions(MethodDefinition method)
+        private List<Instruction> InstructionsWithOpcode(MethodDefinition method, OpCode opCode)
         {
             return
                 method.Body.Instructions.Cast<Instruction>().ToList().FindAll(
-                    instruction => IsExitInstruction(instruction)).ToList();
+                    instruction => instruction.OpCode == opCode).ToList();
         }
 
         public override void FinishVisitingAssemblyDefinition(AssemblyDefinition assembly)

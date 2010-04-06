@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -44,6 +45,7 @@ namespace SilverlightProfiler
 
         private static void ZipTheXapFile(string sourceFolder, string xapFile)
         {
+            File.Delete(xapFile);
             using (var zipFile = new ZipFile())
             {
                 zipFile.AddFiles(Directory.GetFiles(sourceFolder), false, "");
@@ -55,6 +57,7 @@ namespace SilverlightProfiler
         {
             var document = new XmlDocument();
             document.Load(manifestFile);
+            if (document.OuterXml.Contains("SilverlightProfilerRuntime.dll")) return;
             XmlNamespaceManager manager = new XmlNamespaceManager(document.NameTable);
             manager.AddNamespace("x", "http://schemas.microsoft.com/winfx/2006/xaml");
             manager.AddNamespace("", "http://schemas.microsoft.com/client/2007/deployment");

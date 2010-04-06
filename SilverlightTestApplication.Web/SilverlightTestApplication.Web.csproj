@@ -72,6 +72,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj">
+      <Project>{1C895538-1BBF-453B-99BD-35D5A8BF74C9}</Project>
+      <Name>SilverlightProfilerRuntime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -103,6 +109,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)..\SilverlightProfiler\bin\debug\SilverlightProfiler.exe SilverlightTestApplication $(ProjectDir)clientbin\SilverlightTestApplication.xap  SilverlightTestApplication !Test</PostBuildEvent>
+    <PostBuildEvent>copy $(ProjectDir)clientbin\SilverlightTestApplication.xap $(ProjectDir)clientbin\InstrumentedSilverlightTestApplication.xap 
+$(ProjectDir)..\SilverlightProfiler\bin\debug\SilverlightProfiler.exe SilverlightTestApplication $(ProjectDir)clientbin\InstrumentedSilverlightTestApplication.xap  SilverlightTestApplication !Test</PostBuildEvent>
   </PropertyGroup>
 </Project>

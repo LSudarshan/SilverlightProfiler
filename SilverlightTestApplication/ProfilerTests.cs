@@ -11,7 +11,10 @@ namespace SilverlightTestApplication
     {
         protected Call Root
         {
-            get { return Profiler.stacksPerThread.Values.ToList()[0].Peek(); }
+            get
+            {
+                return Profiler.stacksPerThread.Values.ToList()[0].Peek();
+            }
         }
 
         [TestMethod]
@@ -38,6 +41,23 @@ namespace SilverlightTestApplication
             EnqueueCallback(() => Assert.AreEqual(1, Root.Children[1].Children.Count));
             EnqueueCallback(
                 () => Assert.AreEqual("SilverlightTestApplication.SomeClass.B", Root.Children[1].Children[0].FullName));
+            StopProfiling();
+            EnqueueTestComplete();
+        }
+        
+        [TestMethod]
+        [Asynchronous]
+        public void ShouldProfileMethodsWhichThrowExceptionsCorrectly()
+        {
+            StartProfiling();
+            EnqueueCallback(() => SomeClass.E());
+            EnqueueCallback(() => Assert.AreEqual(1, Root.Children.Count));
+            EnqueueCallback(
+                () =>
+                Assert.AreEqual("SilverlightTestApplication.SomeClass.E", Root.Children[0].FullName));
+            EnqueueCallback(() => Assert.AreEqual(1, Root.Children[0].Children.Count));
+            EnqueueCallback(
+                () => Assert.AreEqual("SilverlightTestApplication.SomeClass.ThrowsException", Root.Children[0].Children[0].FullName));
             StopProfiling();
             EnqueueTestComplete();
         }

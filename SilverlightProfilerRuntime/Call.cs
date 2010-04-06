@@ -11,15 +11,13 @@ namespace SilverlightProfilerRuntime
         private Call parent;
         private int numberOfTimesCalledFromParent;
         private string methodName;
-        private string classWhichOwnsMethod;
         private DateTime enterTime;
         private double duration;
         private double profilerMethodsExecutionDuration;
 
-        public Call(string methodName, string classWhichOwnsMethod, Call parent)
+        public Call(string methodName, Call parent)
         {
             this.methodName = methodName;
-            this.classWhichOwnsMethod = classWhichOwnsMethod;
             this.parent = parent;
         }
 
@@ -75,13 +73,13 @@ namespace SilverlightProfilerRuntime
         {
             get
             {
-                return classWhichOwnsMethod + "." + methodName;
+                return methodName;
             }
         }
 
         public bool IsThreadRoot
         {
-            get { return classWhichOwnsMethod == THREAD; }
+            get { return methodName == THREAD; }
         }
 
         public void Enter(DateTime time)
