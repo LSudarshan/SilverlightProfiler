@@ -9,6 +9,15 @@ namespace SilverlightTestApplication
             B();
         }
 
+        public void C()
+        {
+            D("text");
+        }
+
+        private void D(string text)
+        {
+        }
+
         private void B()
         {
             

@@ -26,7 +26,7 @@ namespace SilverlightProfiler
             }
             foreach (AssemblyNameReference reference in assembly.MainModule.AssemblyReferences)
             {
-                if (assemblyInstrumentCondition.Matches(reference.Name) && reference.HasPublicKey)
+                if (assemblyInstrumentCondition.Matches(reference.Name) && reference.PublicKeyToken != null)
                     RemoveStrongName(reference);
             }
             FixInternalsVisibleToCustomAttributes(assembly);
