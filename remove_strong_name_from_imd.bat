@@ -1,0 +1,1 @@
+RemoveStrongNames\bin\debug\RemoveStrongNames.exe E:\projects\BCG\IMD\tools\Telerik Telerik

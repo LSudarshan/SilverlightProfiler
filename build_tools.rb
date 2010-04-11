@@ -16,6 +16,12 @@ def vdir(path, name)
   sh "#{@props[:tools][:appcmd]} add app /site.name:\"Default Web Site\" /path:\"/#{name}\" /physicalPath:\"#{path}\""
 end
 
+def copy_files from, to
+  FileList[from].each do |f|
+    cp f, "#{to}\\#{File.basename(f)}"
+  end
+end
+
 def setup_defaults
   @props = {}
   @props[:solution_path] = '.\\'

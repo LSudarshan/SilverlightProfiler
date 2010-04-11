@@ -13,10 +13,12 @@ namespace RemoveStrongNames
     {
         static void Main(string[] args)
         {
-            string[] files = Directory.GetFiles(@"E:\projects\BCG\IMD\tools\Telerik", "*.dll");
+            string dir = args[0];
+            string assemblyPattern = args[1];
+            string[] files = Directory.GetFiles(dir, "*.dll");
             foreach (string file in files)
             {
-                RemoveStrongName(file, "Telerik");
+                RemoveStrongName(file, assemblyPattern);
             }
         }
 

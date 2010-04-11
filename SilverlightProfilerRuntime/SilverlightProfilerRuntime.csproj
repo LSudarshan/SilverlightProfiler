@@ -64,6 +64,7 @@
       <DependentUpon>ProfilerStartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadRoot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ProfileOutputTree.xaml">

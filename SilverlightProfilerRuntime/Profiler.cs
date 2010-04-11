@@ -24,7 +24,7 @@ namespace SilverlightProfilerRuntime
                 if (stacksPerThread.ContainsKey(key))
                     return stacksPerThread[key];
                 var newStack = new Stack<Call>();
-                newStack.Push(new Call(Call.THREAD, null));
+                newStack.Push(new ThreadRoot(key));
                 stacksPerThread[key] = newStack;
                 return newStack;
             }

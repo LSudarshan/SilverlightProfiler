@@ -69,7 +69,7 @@ namespace SilverlightProfilerRuntime
             get { return numberOfTimesCalledFromParent; }
         }
 
-        public string FullName
+        public virtual string FullName
         {
             get
             {
@@ -77,9 +77,9 @@ namespace SilverlightProfilerRuntime
             }
         }
 
-        public bool IsThreadRoot
+        public virtual bool IsThreadRoot
         {
-            get { return methodName == THREAD; }
+            get { return false; }
         }
 
         public void Enter(DateTime time)
@@ -121,6 +121,5 @@ namespace SilverlightProfilerRuntime
             return parent.Depth() + 1;
         }
 
-        public static string THREAD = "AppThread";
     }
 }

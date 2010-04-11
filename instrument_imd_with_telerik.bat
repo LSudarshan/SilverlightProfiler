@@ -1,0 +1,1 @@
+SilverlightProfiler.exe IMDClient E:\projects\BCG\IMD\src\IMDClient\IMDClient.Web\ClientBin\imdclient.xap "IMD||IContact||BCG||Telerik" .

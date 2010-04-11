@@ -16,5 +16,14 @@ task :vdir do
   vdir "e:\\projects\\silverlightprofiler\\SilverlightTestApplication.Web", "SilverlightTestApplication"
 end
 
-task :all => [:test, :ft]
+task :package do
+  mkdir_p "deploy"
+  copy_files "*.bat", "deploy"
+  copy_files "SilverlightProfiler/bin/Debug/*.exe", "deploy"
+  copy_files "SilverlightProfiler/bin/debug/*.dll", "deploy"
+  copy_files "RemoveStrongNames/bin/Debug/*.exe", "deploy"
+  copy_files "RemoveStrongNames/bin/debug/*.dll", "deploy"
+end
+
+task :all => [:test, :ft, :package]
 

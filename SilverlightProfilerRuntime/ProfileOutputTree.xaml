@@ -14,9 +14,17 @@
         <TextBlock Text="{Binding Duration}"></TextBlock>
       </StackPanel>
     </toolkit:HierarchicalDataTemplate>
+
+    <toolkit:HierarchicalDataTemplate x:Key="TreeElementRoot" ItemsSource="{Binding SortedChildren}" ItemTemplate="{StaticResource TreeElementTemplate}">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock Text="{Binding FullName}"></TextBlock>
+        <TextBlock Text="  "/>
+        <TextBlock Text="{Binding ThreadId}"></TextBlock>
+      </StackPanel>
+    </toolkit:HierarchicalDataTemplate>
   </UserControl.Resources>
   
   <Grid x:Name="LayoutRoot" Background="White">
-    <Controls:TreeView ItemsSource="{Binding SortedChildren}" ItemTemplate="{StaticResource TreeElementTemplate}" />
+    <Controls:TreeView ItemsSource="{Binding SortedChildren}" ItemTemplate="{StaticResource TreeElementRoot}" />
   </Grid>
 </UserControl>
