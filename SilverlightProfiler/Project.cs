@@ -66,7 +66,7 @@ namespace SilverlightProfiler
         public void ProcessAssembly(CodeVisitor visitor, AssemblyDefinition assembly)
         {
             visitor.StartVisitingAssemblyDefinition(assembly);
-            new StrongName(assembly, assemblyInstrumentationCondition).FixReferences();
+//            new StrongName(assembly, assemblyInstrumentationCondition).FixReferences();
             TypeDefinitionCollection types = assembly.MainModule.Types;
             foreach (TypeDefinition type in types)
             {

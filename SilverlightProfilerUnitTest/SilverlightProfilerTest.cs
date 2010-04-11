@@ -21,9 +21,9 @@ namespace SilverlightProfilerUnitTest
         {
             assembly =
                 AssemblyFactory.GetAssembly(
-                    @"..\..\..\SampleSilverlightApplication\bin\debug\SampleSilverlightApplication.dll");
+                    @"..\..\..\SilverlightTestApplication\bin\debug\SilverlightTestApplication.dll");
             new Project("", null, "", Condition.Eq(".")).ProcessAssembly(
-                new SilverlightProfilerVisitor("afterModification\\", "SammpleSilverlightApplication"), assembly);
+                new SilverlightProfilerVisitor("afterModification\\", "SilverlightTestApplication"), assembly);
         }
 
         [Test]

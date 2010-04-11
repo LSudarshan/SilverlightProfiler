@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfiler", "Silv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoveStrongNames", "RemoveStrongNames\RemoveStrongNames.csproj", "{06EBC836-AA33-4763-A9EA-36A53B4A6F16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerUnitTest", "SilverlightProfilerTest\SilverlightProfilerUnitTest.csproj", "{6BBCAAC0-6FC6-45E0-BC86-EADB0D1C2C2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerUnitTest", "SilverlightProfilerUnitTest\SilverlightProfilerUnitTest.csproj", "{6BBCAAC0-6FC6-45E0-BC86-EADB0D1C2C2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightTestApplication", "SilverlightTestApplication\SilverlightTestApplication.csproj", "{254F0255-9149-4E1C-83CB-94B25221E908}"
 	ProjectSection(ProjectDependencies) = postProject
