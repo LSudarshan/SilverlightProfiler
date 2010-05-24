@@ -26,4 +26,5 @@ task :package do
 end
 
 task :all => [:test, :ft, :package]
+task :default => :all
 
