@@ -67,8 +67,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Silverlight.Testing" />
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight" />
+	<Reference Include="Microsoft.Silverlight.Testing">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Microsoft.Silverlight.Testing</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="mscorlib" />
     <Reference Include="system" />
