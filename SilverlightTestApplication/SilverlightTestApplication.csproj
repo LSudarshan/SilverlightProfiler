@@ -115,11 +115,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
-  <Import Condition="$(EnableSilverlightToolkitExtensions)=='true'" Project="$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\SilverlightToolkit\Tools\v3.0)Microsoft.Silverlight.Toolkit.Build.targets" />
-  <Target Name="AfterBuild">
-    <Message Condition="$(EnableSilverlightToolkitExtensions)!='true'" Importance="high" Text="The Silverlight Toolkit build extensions are not enabled." />
-    <CallTarget Condition="$(EnableSilverlightToolkitExtensions)=='true'" Targets="SilverlightToolkitAfterBuild" />
-  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
