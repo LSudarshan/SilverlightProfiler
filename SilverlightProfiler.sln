@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfilerRuntime", "SilverlightProfilerRuntime\SilverlightProfilerRuntime.csproj", "{1C895538-1BBF-453B-99BD-35D5A8BF74C9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightProfiler", "SilverlightProfiler\SilverlightProfiler.csproj", "{17683799-94FF-4B75-86B1-8B825DFCD6AE}"
