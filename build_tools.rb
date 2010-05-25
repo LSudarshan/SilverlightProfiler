@@ -26,7 +26,7 @@ def setup_defaults
   @props = {}
   @props[:solution_path] = '.\\'
   @props[:tools] = {}
-  @props[:tools][:msbuild] = 'C:\\WINDOWS\\Microsoft.NET\\Framework\\v3.5\\MSBuild.exe'
+  @props[:tools][:msbuild] = 'C:\\WINDOWS\\Microsoft.NET\\Framework\\v4.0.30319\\MSBuild.exe'
   @props[:tools][:nunit] = 'tools\\NUnit\\nunit-console.exe'
   @props[:tools][:appcmd] = 'C:\Windows\System32\inetsrv\appcmd.exe'
 end
